@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import pyowm
 import sys
-from PyQt5.QtWidgets import (QWidget, QPushButton, QLineEdit, QInputDialog, QApplication)
+from PyQt5.QtWidgets import (QWidget, QPushButton, QLabel, QInputDialog, QApplication)
 
 class Example(QWidget):
     
@@ -16,12 +16,12 @@ class Example(QWidget):
         self.btn.move(20, 20)
         self.btn.clicked.connect(self.temp)
         
-        self.le = QLineEdit(self)
-        self.le.move(130, 44)
+        self.le = QLabel('Выберите город', self)
+        self.le.move(20, 44)
         self.le.setGeometry(1, 50, 290, 49)
         
         self.setGeometry(300, 300, 290, 150)
-        self.setWindowTitle('Input dialog')
+        self.setWindowTitle('PythonAlphaSeliv')
         self.show()
     def temp(self):
         owm = pyowm.OWM('7d32e2a438de1683999132b81b27b79d', language = "ru")
@@ -31,7 +31,7 @@ class Example(QWidget):
         w = observation.get_weather()
         temp = w.get_temperature('celsius')["temp"]
         if ok:
-            self.le.setText(str("В городе " + place + " погода " + w.get_detailed_status() + str(temp)))
+            self.le.setText(str("Погода в городе " + place + ": " + w.get_detailed_status() + ", " + str(temp) + "°C"))
         
         
 if __name__ == '__main__':
