@@ -1,2 +1,2 @@
 # PythonAlphaSeliv
-Прогноз погоды последняя версия Weather скачивать с config.py
+Прогноз погоды последняя версия Weather_saves скачивать с config.py
