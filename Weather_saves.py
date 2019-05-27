@@ -1,4 +1,3 @@
-## -*- coding: utf-8 -*-
 from PyQt5 import QtCore, QtGui, QtWidgets
 import pyowm
 import sys
@@ -6,7 +5,7 @@ import json
 from PyQt5.QtWidgets import QInputDialog
 exec(open("./config.py").read())
 places = (place)
-owms = (owms)
+owmsk = (owmsk)
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -45,25 +44,32 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
-    def temp(self, Form):
+    def temp(self, Form): # Узнаёт погоду и сохраняет инфу
+        text1, ok = QtWidgets.QInputDialog.getText(None, 'Api', 'Введите ключ с сайта')
+        owms = text1
         owm = pyowm.OWM(owms, language = "ru")
-        text, ok = QtWidgets.QInputDialog.getText(None, 'Город', 'Ведите название города:')
+        if ok:
+            text, ok = QtWidgets.QInputDialog.getText(None, 'Город', 'Ведите название города:')
         place = text
         observation = owm.weather_at_place(str(place))
         w = observation.get_weather()
         temp = w.get_temperature('celsius')["temp"]
         if ok:
             self.label.setText(str("Погода в городе " + place + ": " + w.get_detailed_status() + ", " + str(temp) + "°C"))
-    def saves(self, Form):
-        owm = pyowm.OWM(owms, language = "ru")
+        f = open('config.py', 'wt')
+        f.write(str("owmsk = '" +owms + "'" "\n" + "place = '" + place + "'"))
+        f.close()
+    def saves(self, Form): # Быстро узнать инфу о своем городе
+        owm = pyowm.OWM(owmsk, language = "ru")
         observation = owm.weather_at_place(places)
         w = observation.get_weather()
         temp = w.get_temperature('celsius')["temp"]
         self.label.setText(str("Погода в городе " + place + ": " + w.get_detailed_status() + ", " + str(temp) + "°C"))
         
-    def info(self, Form):
+    def info(self, Form): # about
         info = str("Программа находится в очень раннем развитии и пиздец какая корявая\nвсе баги которые вы найдете напишите в дискорд")
         self.label.setText(info)
+
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -72,6 +78,13 @@ class Ui_Form(object):
         self.pushButton_2.setText(_translate("Form", "Инфо"))
         self.pushButton_3.setText(_translate("Form",  "Узнать"))
         self.label.setText(_translate("Form", "TextLabel"))
+    def save (self, Form):
+        owms = api(self.api)
+        f = open('config.py', 'wt')
+        f.write("owms  = "+ owms)
+        f.close()
+        
+        
 
 
 if __name__ == "__main__":
