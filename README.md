@@ -5,3 +5,4 @@
 - Установить pip install pyowm pyqt5
 - Запуск в консоли python Weather{version}.py
 - Версия python 3.8
+- Сайт для получения api https://home.openweathermap.org/users/sign_up'
